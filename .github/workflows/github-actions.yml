@@ -1,8 +1,0 @@
-name: turn secrets into os.environ variables
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
-env:
-  host: ${{ secrets.HOST }}
-  port: ${{ secrets.PORT }}
-  username: ${{ secrets.USERNAME }}
-  password: ${{ secrets.PASSWORD }}
