@@ -5,4 +5,5 @@
       USERNAME: ${{ secrets.USERNAME }}
       PASSWORD: ${{ secrets.PASSWORD }}
   run: |
-    manage
+    ${{ workspaceFolder }}/manage.py
+    args: ["runserver"]
