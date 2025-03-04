@@ -15,51 +15,6 @@ from hello import wf_generator, info_fetcher
 max_dur = 60 # maximum song duration is 60 seconds
 key_lifetime = 1800 # maximum lifetime of a session is 30 minutes of inactivity
 
-def home(request):
-    return HttpResponse("Hello, Django!")
-
-def hello_there(request, name):
-    now = datetime.now()
-    formatted_now = now.strftime("%A, %d %B, %Y at %X")
-
-    # Filter the name argument to letters only using regular expressions. URL arguments
-    # can contain arbitrary text, so we restrict to safe characters only.
-    match_object = re.match("[a-zA-Z]+", name)
-
-    if match_object:
-        clean_name = match_object.group(0)
-    else:
-        clean_name = "Friend"
-
-    content = "Hello there, " + clean_name + "! It's " + formatted_now
-    # return HttpResponse(content)
-
-    # return image
-    # img = open('/Users/omer/Downloads/Untitled-1_0000_Layer-3.png', 'rb')
-    # response = FileResponse(img)
-    # return response
-
-    # return .wav
-
-
- 
- 
-
-    stimulus = wf_generator.wf(150, 0.5)
-
-
-    # this works!!!
-    bytes_wav = bytes()
-    byte_io = BytesIO(bytes_wav)
-
-    write(byte_io, 44100, stimulus)
-
-    #result_bytes = byte_io.read()
-    #response = FileResponse(result_bytes,as_attachment=False, filename='nuthin.wav')
-    byte_io.seek(0)
-    response = FileResponse(byte_io,as_attachment=True, filename='nuthin.wav')
-    return response
-
 # build the actual song from saved user data (for audio html element)
 def fetch_song(request):
     # retrieve current user data from redis
