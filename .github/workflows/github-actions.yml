@@ -5,5 +5,5 @@
       USERNAME: ${{ secrets.USERNAME }}
       PASSWORD: ${{ secrets.PASSWORD }}
   run: |
-    secretsecret
+    info_fetcher
 
