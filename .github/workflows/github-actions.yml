@@ -1,6 +1,7 @@
-on: [push]
-env:
-    HOST: "${{ secrets.HOST }}"
-    PORT: "${{ secrets.PORT }}"
-    USERNAME: "${{ secrets.USERNAME }}"
-    PASSWORD: "${{ secrets.PASSWORD }}"
+- name: Run tests
+  env:
+    HOST: ${{ secrets.HOST }}
+    PORT: ${{ secrets.PORT }}
+    USERNAME: ${{ secrets.USERNAME }}
+    PASSWORD: ${{ secrets.PASSWORD }}
+
