@@ -15,7 +15,7 @@ from hello import wf_generator, info_fetcher
 max_dur = 60 # maximum song duration is 60 seconds
 key_lifetime = 1800 # maximum lifetime of a session is 30 minutes of inactivity
 
-# build the actual song from saved user data (for audio html element)
+# build the actual song from saved user data (for audio src html element)
 def fetch_song(request):
     # retrieve current user data from redis
     ip_address = info_fetcher.getIPaddress(request)
