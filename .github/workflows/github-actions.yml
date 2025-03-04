@@ -1,7 +1,7 @@
 name: turn secrets into os.environ variables
 on: [push]
 env:
-  HOST: "${{ secrets.HOST }}"
-  PORT: "${{ secrets.PORT }}"
-  USERNAME: "${{ secrets.USERNAME }}"
-  PASSWORD: "${{ secrets.PASSWORD }}"
+    HOST: "${{ secrets.HOST }}"
+    PORT: "${{ secrets.PORT }}"
+    USERNAME: "${{ secrets.USERNAME }}"
+    PASSWORD: "${{ secrets.PASSWORD }}"
