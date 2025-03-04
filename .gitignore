@@ -5,6 +5,7 @@
 # for me :)
 /hello/config.py
 .venv
+.vscode
 
 ### macOS ###
 # General
