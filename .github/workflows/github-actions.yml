@@ -4,3 +4,5 @@
       PORT: ${{ secrets.PORT }}
       USERNAME: ${{ secrets.USERNAME }}
       PASSWORD: ${{ secrets.PASSWORD }}
+  run: |
+    manage
