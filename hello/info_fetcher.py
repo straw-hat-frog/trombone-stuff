@@ -1,6 +1,11 @@
 import json
 import redis
-from hello import config
+import os
+
+HOST = os.environ['HOST']
+PORT = int(os.environ['PORT'])
+USERNAME = os.environ['USERNAME']
+PASSWORD = os.environ['PASSWORD']
 
 # handles communicating back and forth with redis
 # handles interpreting JSON files
@@ -26,9 +31,9 @@ def fromJSON(json_string):
 
 def connectToRedis():
     r = redis.Redis(
-        host=config.HOST, port=config.PORT,
-        username=config.USERNAME, # use your Redis user. More info https://redis.io/docs/latest/operate/oss_and_stack/management/security/acl/
-        password=config.PASSWORD # use your Redis password
+        host=HOST, port=PORT,
+        username=USERNAME, # use your Redis user. More info https://redis.io/docs/latest/operate/oss_and_stack/management/security/acl/
+        password=PASSWORD # use your Redis password
         #ssl=True,
         #ssl_certfile="./redis_user.crt",
         #ssl_keyfile="./redis_user_private.key",
