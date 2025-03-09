@@ -2,10 +2,10 @@ import json
 import redis
 import os
 
-HOST = os.environ.get('HOST', default='host')
-PORT = int(os.environ.get('PORT', default='port'))
-USERNAME = os.environ.get('USERNAME', default='username')
-PASSWORD = os.environ.get('PASSWORD', default='password')
+HOST = os.environ.get('REDIS_HOST', default='host')
+PORT = int(os.environ.get('REDIS_PORT', default='port'))
+USERNAME = os.environ.get('REDIS_USERNAME', default='username')
+PASSWORD = os.environ.get('REDIS_PASSWORD', default='password')
 
 # handles communicating back and forth with redis
 # handles interpreting JSON files
