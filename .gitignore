@@ -4,6 +4,7 @@
 
 # for me :)
 /hello/config.py
+/hello/settings.py
 .venv
 .vscode
 
