@@ -14,28 +14,7 @@ from hello import wf_generator, info_fetcher
 # print("http://127.0.0.1:8000/hello/VSCode")
 max_dur = 60 # maximum song duration is 60 seconds
 key_lifetime = 1800 # maximum lifetime of a session is 30 minutes of inactivity
-
-# build the actual song from saved user data (for audio src html element)
-def fetch_song(request):
-    # retrieve current user data from redis
-    ip_address = info_fetcher.getIPaddress(request)
-    userInfo = info_fetcher.getUserInfo(ip_address)
-
-    # create waveform (as numpy array)
-    stimulus = wf_generator.build_user_song(userInfo["frequency"], userInfo["duration"], userInfo["slide-duration"])
-
-    # write stimulus to a format i can send
-    bytes_wav = bytes()
-    byte_io = BytesIO(bytes_wav)
-
-    write(byte_io, wf_generator.fs, stimulus) # TODO: get Hz from wf_generator
-
-    #result_bytes = byte_io.read()
-    #response = FileResponse(result_bytes,as_attachment=False, filename='nuthin.wav')
-    byte_io.seek(0)
-    response = FileResponse(byte_io,as_attachment=True, filename='nuthin.wav')
-    return response
-
+minimum_dur = 3 * wf_generator.ramp_time # minimum note duration to ensure appropriate ramping
 
 def add_freq(request, frequency):
     # clean inputs
@@ -43,6 +22,7 @@ def add_freq(request, frequency):
 
     if match_object:
         clean_freq = int(frequency)
+        clean_freq = max(0, clean_freq)
         # TODO: make sure number is within appropriate range (ie positive)
         # if freq = 0, note is silence
 
@@ -62,7 +42,8 @@ def add_freq(request, frequency):
                                      key_lifetime)
             
             # TODO: redirect to appropriate page (frequency picker? note duration picker?)
-            return HttpResponse(f"added new note! {info_fetcher.getUserInfo(ip_address)}")
+            #return HttpResponse(f"added new note! {info_fetcher.getUserInfo(ip_address)}")
+            return HttpResponse(status=204)
         else: # if user hasn't finished setting note duration
             # TODO: redirect to appropriate error page
             return HttpResponse(status=204)
@@ -76,13 +57,14 @@ def add_dur(request, duration):
 
     if match_object:
         clean_dur = int(duration)/1000
-        # TODO: make sure number is within appropriate range (ie positive, >=0.5)
+        clean_dur = max(minimum_dur, clean_dur)
 
         # retrieve current user data from redis
         ip_address = info_fetcher.getIPaddress(request)
         userInfo = info_fetcher.getUserInfo(ip_address)
 
         if( # test if you're allowed to add duration
+            duration >= 
             len(userInfo["duration"]) == len(userInfo["frequency"]) - 1 # frequency already added but duration not
             and (sum(userInfo["slide-duration"])        # the new duration isn't too long
                  + sum(userInfo["duration"]) 
@@ -97,7 +79,8 @@ def add_dur(request, duration):
                                      key_lifetime)
             
             # TODO: redirect to appropriate page (frequency picker? note duration picker?)
-            return HttpResponse(f"added current note's duration! {info_fetcher.getUserInfo(ip_address)}")
+            #return HttpResponse(f"added current note's duration! {info_fetcher.getUserInfo(ip_address)}")
+            return HttpResponse(status=204)
         else: # if note duration failed to pass muster in some way
             # TODO: redirect to appropriate error page (duration too long? already added duration?)
             return HttpResponse(status=204)
@@ -111,7 +94,7 @@ def add_slide(request, slide_duration):
 
     if match_object:
         clean_slide_dur = int(slide_duration)/1000
-        # TODO: make sure number is within appropriate range (ie positive)
+        clean_slide_dur = max(minimum_dur, clean_slide_dur)
 
         # retrieve current user data from redis
         ip_address = info_fetcher.getIPaddress(request)
@@ -139,7 +122,8 @@ def add_slide(request, slide_duration):
                                      key_lifetime)
             
             # TODO: redirect to appropriate page (frequency picker? note duration picker?)
-            return HttpResponse(f'added slide to current note! {info_fetcher.getUserInfo(ip_address)}')
+            #return HttpResponse(f'added slide to current note! {info_fetcher.getUserInfo(ip_address)}')
+            return HttpResponse(status=204)
         else: # if slide duration failed to pass muster in some way
             # TODO: redirect to appropriate error page (slide too long? no previous note?)
             return HttpResponse(status=204)
@@ -150,21 +134,25 @@ def add_slide(request, slide_duration):
 def clear_data(request):
     ip_address = info_fetcher.getIPaddress(request)
     info_fetcher.clearUserInfo(ip_address)
+    return HttpResponse(status=204)
 
-
+# build the actual song from saved user data (for audio src html element)
 def fetch_song(request):
+    # retrieve current user data from redis
     ip_address = info_fetcher.getIPaddress(request)
-    user_info = info_fetcher.getUserInfo(ip_address)
-    stimulus = wf_generator.build_user_song(user_info["frequency"], user_info["duration"], user_info["slide-duration"])
+    userInfo = info_fetcher.getUserInfo(ip_address)
 
+    # create waveform (as numpy array)
+    stimulus = wf_generator.build_user_song(userInfo["frequency"], userInfo["duration"], userInfo["slide-duration"])
+
+    # write stimulus to a format i can send
     bytes_wav = bytes()
     byte_io = BytesIO(bytes_wav)
 
     write(byte_io, wf_generator.fs, stimulus)
 
-    #result_bytes = byte_io.read()
-    #response = FileResponse(result_bytes,as_attachment=False, filename='nuthin.wav')
+    # prepare and send the .wav file!!
     byte_io.seek(0)
-    response = FileResponse(byte_io,as_attachment=True, filename='nuthin.wav')
+    response = FileResponse(byte_io, as_attachment=True, filename='trombone-song.wav')
     return response
     
