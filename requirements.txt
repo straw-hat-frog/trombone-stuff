@@ -4,3 +4,4 @@ numpy==2.2.3
 redis==5.2.1
 scipy==1.15.2
 sqlparse==0.5.3
+gunicorn==23.0.0
