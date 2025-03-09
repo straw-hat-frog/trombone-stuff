@@ -64,7 +64,6 @@ def add_dur(request, duration):
         userInfo = info_fetcher.getUserInfo(ip_address)
 
         if( # test if you're allowed to add duration
-            duration >= 
             len(userInfo["duration"]) == len(userInfo["frequency"]) - 1 # frequency already added but duration not
             and (sum(userInfo["slide-duration"])        # the new duration isn't too long
                  + sum(userInfo["duration"]) 
