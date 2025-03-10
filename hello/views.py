@@ -11,7 +11,7 @@ from hello import wf_generator, info_fetcher
 #   - input cleaning and validation
 #   - encoding various stuff correctly
 
-# print("http://127.0.0.1:8000/hello/VSCode")
+# print("http://127.0.0.1:8000/connections")
 max_dur = 60 # maximum song duration is 60 seconds
 key_lifetime = 1800 # maximum lifetime of a session is 30 minutes of inactivity
 minimum_dur = 3 * wf_generator.ramp_time # minimum note duration to ensure appropriate ramping
