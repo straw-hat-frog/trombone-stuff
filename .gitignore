@@ -6,6 +6,7 @@
 /hello/config.py
 .venv
 .vscode
+debugging.txt
 
 ### macOS ###
 # General
